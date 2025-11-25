@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Mothma Design | Професійний дизайн та фотодрук</title>
+    
+    <!-- Підключення шрифтів (Inter для чистоти та читабельності) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Налаштування кольорів Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            50: '#f0f4f8',
+                            100: '#d9e2ec',
+                            200: '#bcccdc',
+                            300: '#9fb3c8',
+                            400: '#829ab1',
+                            500: '#627d98',
+                            600: '#486581',
+                            700: '#334e68',
+                            800: '#243b53',
+                            900: '#102a43',
+                            950: '#061523',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Стилі -->
+    <style>
+        body {
+            background-color: #061523;
+            color: #bcccdc;
+            overflow-x: hidden;
+        }
+
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #061523;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334e68;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #486581;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            color: #f0f4f8;
+            letter-spacing: -0.02em;
+        }
+
+        .glass-panel {
+            background: rgba(16, 42, 67, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(130, 154, 177, 0.1);
+        }
+
+        /* Анімація переходу між сторінками */
+        .page-transition {
+            transition: opacity 0.4s ease-in-out, transform 0.4s ease-in-out;
+        }
+        .hidden-page {
+            display: none;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .visible-page {
+            display: block;
+            opacity: 1;
+            pointer-events: auto;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Стилі для таблиці прайсу */
+        .price-table th {
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.85rem;
+        }
+        .price-table td {
+            font-weight: 300;
+        }
+        .currency-symbol {
+            font-family: 'Inter', sans-serif;
+            font-weight: 400;
+        }
+    </style>
+    
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="antialiased selection:bg-navy-700 selection:text-white">
+
+    <div class="noise-overlay"></div>
+
+    <!-- Навігація -->
+    <nav class="fixed w-full z-40 top-0 transition-all duration-300 glass-panel" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0 cursor-pointer" onclick="navigateTo('home')">
+                    <span class="text-xl font-medium tracking-wide text-navy-50">Mon Mothma Design</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-8">
+                        <a href="#philosophy" onclick="navigateTo('home', 'philosophy')" class="text-sm font-medium text-navy-200 hover:text-white transition-colors duration-300">Філософія</a>
+                        <a href="#services" onclick="navigateTo('home', 'services')" class="text-sm font-medium text-navy-200 hover:text-white transition-colors duration-300">Послуги</a>
+                        <button onclick="navigateTo('pricelist')" class="text-sm font-medium text-navy-200 hover:text-white transition-colors duration-300 focus:outline-none">Прайслист</button>
+                        <a href="#process" onclick="navigateTo('home', 'process')" class="text-sm font-medium text-navy-200 hover:text-white transition-colors duration-300">Процес</a>
+                        <a href="#contact" onclick="navigateTo('home', 'contact')" class="px-4 py-2 text-sm font-medium text-navy-950 bg-navy-200 rounded-sm hover:bg-white transition-all duration-300">Зв'язатися</a>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-navy-200 hover:text-white focus:outline-none" onclick="document.getElementById('mobile-menu').classList.toggle('hidden')">
+                        <i data-lucide="menu" class="w-6 h-6"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="hidden md:hidden bg-navy-900 border-b border-navy-800" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#philosophy" onclick="navigateTo('home', 'philosophy'); document.getElementById('mobile-menu').classList.add('hidden')" class="block px-3 py-2 text-base font-medium text-navy-200 hover:text-white">Філософія</a>
+                <a href="#services" onclick="navigateTo('home', 'services'); document.getElementById('mobile-menu').classList.add('hidden')" class="block px-3 py-2 text-base font-medium text-navy-200 hover:text-white">Послуги</a>
+                <button onclick="navigateTo('pricelist'); document.getElementById('mobile-menu').classList.add('hidden')" class="block w-full text-left px-3 py-2 text-base font-medium text-navy-200 hover:text-white">Прайслист</button>
+                <a href="#process" onclick="navigateTo('home', 'process'); document.getElementById('mobile-menu').classList.add('hidden')" class="block px-3 py-2 text-base font-medium text-navy-200 hover:text-white">Процес</a>
+                <a href="#contact" onclick="navigateTo('home', 'contact'); document.getElementById('mobile-menu').classList.add('hidden')" class="block px-3 py-2 text-base font-medium text-navy-200 hover:text-white">Зв'язатися</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- CONTAINER FOR PAGES -->
+    <div id="app-container">
+        
+        <!-- PAGE 1: HOME -->
+        <main id="page-home" class="visible-page">
+            <!-- Hero Section -->
+            <header class="relative h-screen flex items-center justify-center overflow-hidden">
+                <div class="absolute inset-0 z-0">
+                    <div class="absolute inset-0 bg-gradient-to-b from-navy-950/80 via-navy-900/90 to-navy-950 z-10"></div>
+                    <img src="https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2070&auto=format&fit=crop" alt="Abstract Blue Background" class="w-full h-full object-cover opacity-40 scale-105 animate-float" style="filter: hue-rotate(210deg) saturate(1.5);">
+                </div>
+
+                <div class="relative z-20 text-center px-4 max-w-4xl mx-auto reveal active">
+                    <p class="text-navy-300 text-sm md:text-base uppercase tracking-[0.2em] mb-4">Естетика • Якість • Пам'ять</p>
+                    <h1 class="text-4xl md:text-6xl lg:text-7xl font-light text-white mb-6 leading-tight">
+                        Ваші спогади,<br> що житимуть вічно
+                    </h1>
+                    <p class="text-navy-200 text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed">
+                        Професійний дизайн та фотодрук. Ми створюємо візуальні рішення, де кожна деталь має значення, а зображення стає дотиком до історії.
+                    </p>
+                    <div class="mt-10">
+                        <a href="#services" class="inline-flex items-center gap-2 border border-navy-400 text-navy-100 px-8 py-3 hover:bg-navy-800 hover:border-navy-300 transition-all duration-300 rounded-sm">
+                            <span>Переглянути послуги</span>
+                            <i data-lucide="arrow-down" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Philosophy Section -->
+            <section id="philosophy" class="py-24 bg-navy-950 relative">
+                <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                        <div class="reveal">
+                            <h2 class="text-3xl md:text-4xl font-normal mb-8">Сутність візуальної комунікації</h2>
+                            <div class="space-y-6 text-navy-300 font-light leading-7 text-justify">
+                                <p>
+                                    У світі, перенасиченому інформацією, справжня цінність полягає в чистоті сприйняття. Дизайн для мене — це не просто декоративне оформлення простору чи носія, а мова, якою бренд або людина спілкується з навколишнім світом. Це гармонія форми та змісту, де немає нічого зайвого, а кожен елемент виконує свою функцію.
+                                </p>
+                                <p>
+                                    Фотографія ж — це зупинений час. Вона має здатність повертати нас у моменти щастя, смутку чи тріумфу. Саме тому якість її втілення на фізичному носії є критично важливою. Ми використовуємо технології друку, які дозволяють передати глибину кольору та текстуру, перетворюючи звичайний знімок на об'єкт мистецтва.
+                                </p>
+                                <blockquote class="pl-4 border-l-2 border-navy-600 italic text-navy-100 mt-6">
+                                    «Кожна фотографія має свою історію, і моє завдання — розповісти її найкращим чином, чи то на великому полотні, чи на сторінках затишної фотокниги».
+                                </blockquote>
+                            </div>
+                        </div>
+                        <div class="relative h-[500px] reveal delay-200">
+                            <div class="absolute inset-0 bg-navy-800 opacity-20 transform rotate-3 rounded-sm"></div>
+                            <div class="absolute inset-0 bg-navy-900 border border-navy-700 overflow-hidden rounded-sm shadow-2xl">
+                                <img src="https://i.pinimg.com/1200x/3b/41/b9/3b41b905a13bc1639f135d760d59a71f.jpg" alt="Minimalist Design Process" class="w-full h-full object-cover opacity-70 hover:opacity-100 transition-opacity duration-700">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Services Section -->
+            <section id="services" class="py-24 bg-navy-900">
+                <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                    <div class="text-center mb-20 reveal">
+                        <h2 class="text-3xl md:text-4xl font-normal mb-4">Наші послуги</h2>
+                        <div class="w-16 h-px bg-navy-400 mx-auto"></div>
+                        <p class="mt-4 text-navy-300">Комплексний підхід до створення та друку</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        
+                        <!-- Card 1 -->
+                        <div class="group p-8 border border-navy-700 hover:border-navy-500 bg-navy-950/50 transition-all duration-300 reveal hover:-translate-y-2">
+                            <div class="w-12 h-12 bg-navy-800 flex items-center justify-center mb-6 rounded-sm text-navy-200 group-hover:bg-navy-700 transition-colors">
+                                <i data-lucide="printer" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="text-xl font-medium mb-4 text-navy-50">Професійний фотодрук</h3>
+                            <p class="text-navy-300 mb-6 text-sm leading-relaxed">
+                                Високоякісний друк на папері преміумкласу. Ми пропонуємо широкий вибір матеріалів, що дозволяє підкреслити настрій кожного зображення.
+                            </p>
+                            <ul class="space-y-3 text-sm text-navy-400 mb-6">
+                                <li class="flex items-start gap-2">
+                                    <span class="w-1.5 h-1.5 bg-navy-500 rounded-full mt-1.5"></span>
+                                    <span>Глянцевий папір: максимальна насиченість.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="w-1.5 h-1.5 bg-navy-500 rounded-full mt-1.5"></span>
+                                    <span>Матовий папір: відсутність відблисків.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Card 2 -->
+                        <div class="group p-8 border border-navy-700 hover:border-navy-500 bg-navy-950/50 transition-all duration-300 reveal delay-100 hover:-translate-y-2">
+                            <div class="w-12 h-12 bg-navy-800 flex items-center justify-center mb-6 rounded-sm text-navy-200 group-hover:bg-navy-700 transition-colors">
+                                <i data-lucide="book-open" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="text-xl font-medium mb-4 text-navy-50">Дизайн та верстка фотокниг</h3>
+                            <p class="text-navy-300 mb-6 text-sm leading-relaxed">
+                                Створення унікальних фотоальбомів, де кожна сторінка — це частина цілісної історії. Від весільних альбомів до сімейних хронік.
+                            </p>
+                            <div class="text-sm text-navy-400 leading-relaxed">
+                                Ми розробляємо індивідуальний макет кожного розвороту, уникаючи шаблонних рішень.
+                            </div>
+                        </div>
+
+                        <!-- Card 3 -->
+                        <div class="group p-8 border border-navy-700 hover:border-navy-500 bg-navy-950/50 transition-all duration-300 reveal delay-200 hover:-translate-y-2">
+                            <div class="w-12 h-12 bg-navy-800 flex items-center justify-center mb-6 rounded-sm text-navy-200 group-hover:bg-navy-700 transition-colors">
+                                <i data-lucide="monitor" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="text-xl font-medium mb-4 text-navy-50">Вебдизайн та розробка</h3>
+                            <p class="text-navy-300 mb-6 text-sm leading-relaxed">
+                                Ваш цифровий офіс має бути бездоганним. Ми створюємо сайти, які поєднують естетику з функціональністю.
+                            </p>
+                            <ul class="space-y-3 text-sm text-navy-400">
+                                <li class="flex items-start gap-2">
+                                    <i data-lucide="check" class="w-4 h-4 mt-0.5 text-navy-500"></i>
+                                    <span>UX/UI дизайн: зручні інтерфейси.</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i data-lucide="check" class="w-4 h-4 mt-0.5 text-navy-500"></i>
+                                    <span>SEO-оптимізація та адаптивність.</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Card 4 -->
+                        <div class="group p-8 border border-navy-700 hover:border-navy-500 bg-navy-950/50 transition-all duration-300 reveal delay-300 hover:-translate-y-2">
+                            <div class="w-12 h-12 bg-navy-800 flex items-center justify-center mb-6 rounded-sm text-navy-200 group-hover:bg-navy-700 transition-colors">
+                                <i data-lucide="pen-tool" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="text-xl font-medium mb-4 text-navy-50">Брендинг та ідентичність</h3>
+                            <p class="text-navy-300 mb-6 text-sm leading-relaxed">
+                                Розробка логотипів, візитівок, листівок та іншої поліграфічної продукції. Ми допомагаємо бізнесу знайти своє візуальне обличчя.
+                            </p>
+                            <div class="text-sm text-navy-400 leading-relaxed">
+                                Ми створюємо лаконічні та запам'ятовувані образи для вашого бренду.
+                            </div>
+                        </div>
+
+                        <!-- Card 5 -->
+                        <div class="group p-8 border border-navy-700 hover:border-navy-500 bg-navy-950/50 transition-all duration-300 reveal delay-400 hover:-translate-y-2">
+                            <div class="w-12 h-12 bg-navy-800 flex items-center justify-center mb-6 rounded-sm text-navy-200 group-hover:bg-navy-700 transition-colors">
+                                <i data-lucide="image" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="text-xl font-medium mb-4 text-navy-50">Широкоформатний друк</h3>
+                            <p class="text-navy-300 mb-6 text-sm leading-relaxed">
+                                Друк великих форматів (A3 та більше) для інтер'єрних рішень.
+                            </p>
+                            <div class="text-sm text-navy-400 leading-relaxed">
+                                Ідеальне рішення для декорування дому чи офісу. Висока деталізація зображення.
+                            </div>
+                        </div>
+
+                        <!-- Card 6: Price List -->
+                        <div class="group relative p-8 border border-navy-500 bg-navy-800/20 hover:bg-navy-800/40 transition-all duration-300 reveal delay-500 hover:-translate-y-2 cursor-pointer flex flex-col h-full" onclick="navigateTo('pricelist')">
+                            <!-- Label Badge -->
+                            <div class="absolute top-0 right-0 bg-navy-500 text-white text-[10px] uppercase font-bold px-2 py-1 tracking-widest">
+                                Інформація 2.0
+                            </div>
+                            
+                            <div class="w-12 h-12 bg-navy-800 flex items-center justify-center mb-6 rounded-sm text-navy-200 group-hover:bg-navy-700 transition-colors border border-navy-600">
+                                <i data-lucide="file-text" class="w-6 h-6"></i>
+                            </div>
+                            <h3 class="text-xl font-medium mb-4 text-navy-50 group-hover:text-white transition-colors">Прайслист</h3>
+                            <p class="text-navy-300 mb-6 text-sm leading-relaxed flex-grow">
+                                Ознайомтеся з видами паперу, їхніми особливостями та детальною вартістю послуг. Вся необхідна інформація для свідомого вибору.
+                            </p>
+                            <div class="mt-auto pt-4 border-t border-navy-700/50">
+                                <span class="text-sm text-white font-medium flex items-center gap-2 group-hover:gap-3 transition-all">
+                                    Переглянути деталі <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- Details Section -->
+            <section class="py-24 bg-navy-950 relative overflow-hidden">
+                <div class="absolute inset-0 opacity-10 pointer-events-none">
+                    <div class="absolute right-0 top-0 w-1/3 h-full bg-gradient-to-l from-navy-800 to-transparent"></div>
+                </div>
+                <div class="max-w-7xl mx-auto px-6 lg:px-8 relative z-10">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-20">
+                        <div class="reveal">
+                            <h2 class="text-3xl md:text-4xl font-normal mb-8 text-white">Технічні аспекти якості</h2>
+                            <div class="space-y-8">
+                                <div>
+                                    <h4 class="text-lg font-medium text-navy-100 mb-2">Обладнання та матеріали</h4>
+                                    <p class="text-navy-300 font-light leading-relaxed">
+                                        Ми не йдемо на компроміси, коли йдеться про якість. Використання професійного обладнання та оригінальних чорнил гарантує, що ваші фотографії не вицвітуть з часом.
+                                    </p>
+                                </div>
+                                <div>
+                                    <h4 class="text-lg font-medium text-navy-100 mb-2">Підготовка до друку</h4>
+                                    <p class="text-navy-300 font-light leading-relaxed">
+                                        Перед відправкою в роботу кожен файл проходить етап кольорокорекції та кадрування. Це дозволяє уникнути поширених помилок.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 reveal delay-200">
+                            <div class="space-y-4 mt-8">
+                                <div class="w-full h-48 rounded-sm bg-navy-800 bg-cover bg-center opacity-80 hover:opacity-100 transition-opacity" style="background-image: url('https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?q=80&w=800&auto=format&fit=crop');" role="img" aria-label="Printing Process"></div>
+                                <div class="w-full h-64 rounded-sm bg-navy-800 bg-cover bg-center opacity-80 hover:opacity-100 transition-opacity" style="background-image: url('https://i.pinimg.com/1200x/83/3f/f9/833ff9a95b85ba9d8c18f4fd5eeb6ba4.jpg');" role="img" aria-label="Paper Texture"></div>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="w-full h-64 rounded-sm bg-navy-800 bg-cover bg-center opacity-80 hover:opacity-100 transition-opacity" style="background-image: url('https://images.unsplash.com/photo-1542382156909-9ae37b3f56fd?q=80&w=800&auto=format&fit=crop');" role="img" aria-label="Design Workspace"></div>
+                                <div class="w-full h-48 rounded-sm bg-navy-800 bg-cover bg-center opacity-80 hover:opacity-100 transition-opacity" style="background-image: url('https://i.pinimg.com/736x/a4/ad/c3/a4adc32b02c928f827c03f91a9f69150.jpg');" role="img" aria-label="Portfolio Book"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Process Section -->
+            <section id="process" class="py-24 bg-navy-900 border-t border-navy-800">
+                <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                    <div class="mb-16 reveal">
+                        <h2 class="text-3xl font-normal text-white">Алгоритм співпраці</h2>
+                    </div>
+                    <div class="relative">
+                        <div class="absolute top-0 left-6 h-full w-px bg-navy-700 hidden md:block"></div>
+                        <div class="space-y-12">
+                            <!-- Steps... -->
+                            <div class="relative pl-0 md:pl-20 reveal">
+                                <div class="hidden md:flex absolute left-0 top-0 w-12 h-12 bg-navy-800 border border-navy-600 rounded-full items-center justify-center text-navy-200 font-bold z-10">01</div>
+                                <h3 class="text-xl font-medium text-navy-100 mb-2">Аналіз та консультація</h3>
+                                <p class="text-navy-300 font-light max-w-3xl">
+                                    Ми починаємо з діалогу. Ви розповідаєте про свою ідею, я аналізую вхідні дані та пропоную рішення.
+                                </p>
+                            </div>
+                            <div class="relative pl-0 md:pl-20 reveal delay-100">
+                                <div class="hidden md:flex absolute left-0 top-0 w-12 h-12 bg-navy-800 border border-navy-600 rounded-full items-center justify-center text-navy-200 font-bold z-10">02</div>
+                                <h3 class="text-xl font-medium text-navy-100 mb-2">Розробка концепції</h3>
+                                <p class="text-navy-300 font-light max-w-3xl">
+                                    Створення прототипів, верстка макетів або підготовка файлів до друку.
+                                </p>
+                            </div>
+                            <div class="relative pl-0 md:pl-20 reveal delay-200">
+                                <div class="hidden md:flex absolute left-0 top-0 w-12 h-12 bg-navy-800 border border-navy-600 rounded-full items-center justify-center text-navy-200 font-bold z-10">03</div>
+                                <h3 class="text-xl font-medium text-navy-100 mb-2">Реалізація</h3>
+                                <p class="text-navy-300 font-light max-w-3xl">
+                                    Друк, запуск сайту або передача готових матеріалів.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Contact Section (Home Page) -->
+            <section id="contact" class="py-24 bg-navy-950">
+                <div class="max-w-7xl mx-auto px-6 lg:px-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
+                        <div class="reveal">
+                            <h2 class="text-4xl font-normal mb-8 text-white">Зв'яжіться з нами</h2>
+                            <p class="text-navy-300 mb-10 font-light text-lg">
+                                Готові обговорити ваш проєкт? Напишіть мені, і ми створимо щось особливе разом.
+                            </p>
+                            
+                            <div class="space-y-6">
+                                <!-- Email Button -->
+                                <a href="mailto:mon.mothma.design@gmail.com" class="flex items-center gap-4 text-navy-200 hover:text-white transition-colors group">
+                                    <div class="w-10 h-10 bg-navy-800 flex items-center justify-center rounded-sm group-hover:bg-navy-700">
+                                        <i data-lucide="mail" class="w-5 h-5"></i>
+                                    </div>
+                                    <span class="text-lg">mon.mothma.design@gmail.com</span>
+                                </a>
+                                
+                                <!-- Phone Button -->
+                                <a href="tel:+380961775991" class="flex items-center gap-4 text-navy-200 hover:text-white transition-colors group">
+                                    <div class="w-10 h-10 bg-navy-800 flex items-center justify-center rounded-sm group-hover:bg-navy-700">
+                                        <i data-lucide="phone" class="w-5 h-5"></i>
+                                    </div>
+                                    <span class="text-lg">+380 96 177 59 91</span>
+                                </a>
+
+                                <!-- Social Icons Row -->
+                                <div class="flex gap-4 pt-4 pb-2">
+                                    <!-- Telegram -->
+                                    <a href="https://t.me/mon_mothma_design" target="_blank" rel="noopener noreferrer" class="w-12 h-12 border border-navy-600 flex items-center justify-center text-navy-300 hover:text-white hover:bg-navy-800 hover:border-navy-500 transition-all rounded-sm group relative" title="Telegram">
+                                        <i data-lucide="send" class="w-5 h-5 group-hover:-translate-y-0.5 transition-transform"></i>
+                                    </a>
+
+                                    <!-- Instagram -->
+                                    <a href="https://www.instagram.com/mon.mothma_design?igsh=MXBwamdzamxhaGNuZw%3D%3D&utm_sou" target="_blank" rel="noopener noreferrer" class="w-12 h-12 border border-navy-600 flex items-center justify-center text-navy-300 hover:text-white hover:bg-navy-800 hover:border-navy-500 transition-all rounded-sm group relative" title="Instagram">
+                                        <i data-lucide="instagram" class="w-5 h-5 group-hover:-translate-y-0.5 transition-transform"></i>
+                                    </a>
+
+                                    <!-- Viber -->
+                                    <a href="viber://chat?number=%2B380961775991" class="w-12 h-12 border border-navy-600 flex items-center justify-center text-navy-300 hover:text-white hover:bg-navy-800 hover:border-navy-500 transition-all rounded-sm group relative" title="Viber">
+                                        <!-- Viber SVG -->
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 group-hover:-translate-y-0.5 transition-transform"><path d="M18.89 15.59c-.99-.27-2.14-.15-3.05.34-.9.49-1.39 1.48-1.22 2.51a3.02 3.02 0 0 1-2.92 3.52c-4.46.06-8.36-3.79-8.36-8.36a3.02 3.02 0 0 1 3.52-2.92c1.03.17 2.02-.32 2.51-1.22.49-.91.61-2.06.34-3.05A3.01 3.01 0 0 0 7.15 3.5a6.01 6.01 0 0 0-3.6 1.63A12.06 12.06 0 0 0 2.51 11.5a12.06 12.06 0 0 0 6.36 6.36 6.01 6.01 0 0 0 6.36-1.03c.8-.65 1.15-1.7.9-2.7z"/></svg>
+                                    </a>
+
+                                    <!-- WhatsApp -->
+                                    <a href="https://wa.me/380961775991" target="_blank" rel="noopener noreferrer" class="w-12 h-12 border border-navy-600 flex items-center justify-center text-navy-300 hover:text-white hover:bg-navy-800 hover:border-navy-500 transition-all rounded-sm group relative" title="WhatsApp">
+                                         <!-- WhatsApp Phone Icon Variant -->
+                                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 group-hover:-translate-y-0.5 transition-transform"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                                    </a>
+                                </div>
+
+                                <!-- Location -->
+                                <div class="flex items-center gap-4 text-navy-200 group">
+                                    <div class="w-10 h-10 bg-navy-800 flex items-center justify-center rounded-sm">
+                                        <i data-lucide="map-pin" class="w-5 h-5"></i>
+                                    </div>
+                                    <span class="text-lg">Україна (Online / Delivery)</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Form -->
+                        <div class="bg-navy-900 p-8 md:p-10 rounded-sm border border-navy-800 reveal delay-200 shadow-2xl">
+                            <form class="space-y-6" onsubmit="sendToEmail(event)">
+                                <div>
+                                    <label for="name" class="block text-sm font-medium text-navy-300 mb-2">Ваше ім'я</label>
+                                    <input type="text" id="name" required class="w-full bg-navy-950 border border-navy-700 text-white px-4 py-3 rounded-sm focus:outline-none focus:border-navy-400 transition-colors placeholder-navy-600" placeholder="Введіть ім'я">
+                                </div>
+                                <div>
+                                    <label for="email" class="block text-sm font-medium text-navy-300 mb-2">Електронна пошта</label>
+                                    <input type="email" id="email" required class="w-full bg-navy-950 border border-navy-700 text-white px-4 py-3 rounded-sm focus:outline-none focus:border-navy-400 transition-colors placeholder-navy-600" placeholder="example@mail.com">
+                                </div>
+                                <div>
+                                    <label for="message" class="block text-sm font-medium text-navy-300 mb-2">Повідомлення</label>
+                                    <textarea id="message" rows="4" required class="w-full bg-navy-950 border border-navy-700 text-white px-4 py-3 rounded-sm focus:outline-none focus:border-navy-400 transition-colors placeholder-navy-600" placeholder="Опишіть ваше замовлення..."></textarea>
+                                </div>
+                                <button type="submit" class="w-full bg-navy-200 text-navy-950 font-medium py-3.5 px-6 rounded-sm hover:bg-white transition-all duration-300 flex items-center justify-center gap-2">
+                                    <span>Надіслати</span>
+                                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- PAGE 2: PRICELIST (Hidden by default) -->
+        <main id="page-pricelist" class="hidden-page pt-32 pb-24 min-h-screen bg-navy-950">
+            <div class="max-w-4xl mx-auto px-6 lg:px-8">
+                
+                <!-- Back Button -->
+                <button onclick="navigateTo('home')" class="group flex items-center gap-2 text-navy-300 hover:text-white transition-colors mb-12">
+                    <i data-lucide="arrow-left" class="w-5 h-5 group-hover:-translate-x-1 transition-transform"></i>
+                    <span class="text-sm font-medium uppercase tracking-wide">Назад на головну</span>
+                </button>
+
+                <div class="mb-16">
+                    <span class="text-navy-400 text-sm font-medium uppercase tracking-widest mb-3 block">Інформація 2.0</span>
+                    <h1 class="text-4xl md:text-5xl font-light text-white mb-6">Види паперу та їх особливості</h1>
+                    <div class="w-20 h-px bg-navy-400"></div>
+                </div>
+
+                <!-- Paper Types Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
+                    <!-- Glossy -->
+                    <div class="bg-navy-900 border border-navy-800 p-8 rounded-sm relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <i data-lucide="sun" class="w-24 h-24 text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-normal text-white mb-4">Глянцевий папір</h3>
+                        <p class="text-navy-200 font-light leading-relaxed">
+                            Ідеально підходить для яскравих та насичених фотографій. Блискуча поверхня підкреслює кольори та деталі, роблячи зображення «живим». Чудовий вибір для портретів та пейзажів.
+                        </p>
+                    </div>
+
+                    <!-- Matte -->
+                    <div class="bg-navy-900 border border-navy-800 p-8 rounded-sm relative overflow-hidden group">
+                        <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                            <i data-lucide="cloud" class="w-24 h-24 text-white"></i>
+                        </div>
+                        <h3 class="text-2xl font-normal text-white mb-4">Матовий папір</h3>
+                        <p class="text-navy-200 font-light leading-relaxed">
+                            Має неблискучу поверхню, що запобігає появі відблисків та відбитків пальців. Надає фотографіям м'якості та глибини. Добре підходить для чорно-білих знімків та художніх фото.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Price Table -->
+                <div class="mb-20">
+                    <h2 class="text-3xl font-light text-white mb-8">Прайслист на послуги друку</h2>
+                    
+                    <div class="overflow-x-auto rounded-sm border border-navy-700 bg-navy-900/50">
+                        <table class="w-full text-left border-collapse price-table">
+                            <thead>
+                                <tr class="bg-navy-800 text-navy-200 border-b border-navy-700">
+                                    <th class="p-6 w-1/3">Формат</th>
+                                    <th class="p-6 w-1/3">Глянцевий папір</th>
+                                    <th class="p-6 w-1/3">Матовий папір</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-navy-100 divide-y divide-navy-700/50">
+                                <tr class="hover:bg-navy-800/30 transition-colors">
+                                    <td class="p-6">10x15 см</td>
+                                    <td class="p-6 font-medium">23 <span class="currency-symbol">₴</span></td>
+                                    <td class="p-6 font-medium">15 <span class="currency-symbol">₴</span></td>
+                                </tr>
+                                <tr class="hover:bg-navy-800/30 transition-colors">
+                                    <td class="p-6">13x18 см</td>
+                                    <td class="p-6 font-medium">20 <span class="currency-symbol">₴</span></td>
+                                    <td class="p-6 font-medium">17 <span class="currency-symbol">₴</span></td>
+                                </tr>
+                                <tr class="hover:bg-navy-800/30 transition-colors">
+                                    <td class="p-6">15x21 см (A5)</td>
+                                    <td class="p-6 font-medium">21 <span class="currency-symbol">₴</span></td>
+                                    <td class="p-6 font-medium">19 <span class="currency-symbol">₴</span></td>
+                                </tr>
+                                <tr class="hover:bg-navy-800/30 transition-colors">
+                                    <td class="p-6">21x30 см (A4)</td>
+                                    <td class="p-6 font-medium">40 <span class="currency-symbol">₴</span></td>
+                                    <td class="p-6 font-medium">32 <span class="currency-symbol">₴</span></td>
+                                </tr>
+                                <tr class="hover:bg-navy-800/30 transition-colors">
+                                    <td class="p-6">30x42 см (A3)</td>
+                                    <td class="p-6 font-medium">70 <span class="currency-symbol">₴</span></td>
+                                    <td class="p-6 font-medium">65 <span class="currency-symbol">₴</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-4 flex items-start gap-2 text-navy-400 text-sm">
+                        <i data-lucide="info" class="w-4 h-4 mt-0.5 flex-shrink-0"></i>
+                        <p>Мінімальне замовлення — 100 <span class="currency-symbol">₴</span>. Для нестандартних розмірів ціна розраховується індивідуально.</p>
+                    </div>
+                </div>
+
+                <!-- Call to Action -->
+                <div class="bg-navy-800/50 border border-navy-700 p-10 rounded-sm text-center">
+                    <h3 class="text-2xl font-medium text-white mb-4">Як замовити друк?</h3>
+                    <p class="text-navy-200 mb-8 max-w-2xl mx-auto leading-relaxed">
+                        Надішліть ваші фотографії на електронну пошту або в месенджер, вказавши бажаний розмір та тип паперу. Я зв'яжуся з вами для уточнення всіх деталей.
+                    </p>
+                    <button onclick="navigateTo('home', 'contact')" class="inline-flex items-center gap-3 bg-navy-200 text-navy-950 font-medium py-3.5 px-8 rounded-sm hover:bg-white transition-all duration-300 transform hover:-translate-y-1 shadow-lg shadow-navy-950/50">
+                        <span>Перейти до контактів</span>
+                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                    </button>
+                </div>
+
+            </div>
+        </main>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-navy-950 py-12 border-t border-navy-900 text-center md:text-left">
+        <div class="max-w-7xl mx-auto px-6 lg:px-8 flex justify-center items-center text-sm text-navy-500">
+            <p>&copy; 2025 Mon Mothma Design. Всі права захищено.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // Init Icons
+        lucide.createIcons();
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('bg-navy-950/90', 'shadow-lg');
+            } else {
+                navbar.classList.remove('bg-navy-950/90', 'shadow-lg');
+            }
+        });
+
+        // Intersection Observer for fade-in animations
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: "0px 0px -50px 0px"
+        };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        function initObservers() {
+            document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        }
+        initObservers();
+
+        // Single Page Navigation Logic
+        function navigateTo(pageId, sectionId = null) {
+            const homePage = document.getElementById('page-home');
+            const pricePage = document.getElementById('page-pricelist');
+            
+            // Scroll to top first for smooth transition
+            if (!sectionId) {
+                window.scrollTo({top: 0, behavior: 'smooth'});
+            }
+
+            if (pageId === 'home') {
+                pricePage.classList.remove('visible-page');
+                pricePage.classList.add('hidden-page');
+                
+                homePage.classList.remove('hidden-page');
+                homePage.classList.add('visible-page');
+                
+                if (sectionId) {
+                    setTimeout(() => {
+                        const element = document.getElementById(sectionId);
+                        if (element) {
+                            const offset = 80; // height of navbar
+                            const bodyRect = document.body.getBoundingClientRect().top;
+                            const elementRect = element.getBoundingClientRect().top;
+                            const elementPosition = elementRect - bodyRect;
+                            const offsetPosition = elementPosition - offset;
+
+                            window.scrollTo({
+                                top: offsetPosition,
+                                behavior: "smooth"
+                            });
+                        }
+                    }, 100);
+                }
+            } else if (pageId === 'pricelist') {
+                homePage.classList.remove('visible-page');
+                homePage.classList.add('hidden-page');
+                
+                pricePage.classList.remove('hidden-page');
+                pricePage.classList.add('visible-page');
+            }
+            
+            // Re-run icons just in case
+            setTimeout(() => lucide.createIcons(), 50);
+        }
+
+        // Email Send Logic
+        function sendToEmail(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            
+            // Construct mailto link
+            const subject = encodeURIComponent(`Нове замовлення від ${name}`);
+            const body = encodeURIComponent(`Ім'я: ${name}\nEmail: ${email}\n\nПовідомлення:\n${message}`);
+            
+            // Open default mail client
+            window.location.href = `mailto:mon.mothma.design@gmail.com?subject=${subject}&body=${body}`;
+        }
+    </script>
+</body>
+</html>
